@@ -1,25 +1,24 @@
-[![Create a Slack Account with us](https://img.shields.io/badge/Create_Slack_Account-The_Carpentries-071159.svg)](https://swc-slack-invite.herokuapp.com/) 
- [![Slack Status](https://img.shields.io/badge/Slack_Channel-swc--py--gapminder-E01563.svg)](https://swcarpentry.slack.com/messages/C9X4W03KL) 
+# Materials for SciServer SWC Workshop
 
-python-novice-gapminder
-=======================
+SWC Workshop given at JHU from 11/11/2018 - 11/14/2018
 
-Introduction to Python for non-programmers with a focus on plotting and data analysis.
-Please see <https://swcarpentry.github.io/python-novice-gapminder/>
-for a rendered version of this material,
-[the lesson template documentation][lesson-example]
-for instructions on formatting, building, and submitting material,
-or run `make` in this directory for a list of helpful commands.
+## Nix
 
-Maintainer(s):
+Use
 
-* [Allen Lee][lee-allen]
-* [Nathan Moore][moore-nathan]
-* [Sourav Singh][singh-sourav]
-* [Olav Vahtras][olav-vahtras]
+    $ nix-shell
 
-[lee-allen]: https://software-carpentry.org/team/#lee-allen
-[lesson-example]: https://carpentries.github.io/lesson-example/
-[moore-nathan]: https://software-carpentry.org/team/#moore_nathan
-[singh-sourav]: https://software-carpentry.org/team/#singh-sourav
-[olav-vahtras]: https://software-carpentry.org/team/#vahtras_olav
+to fire up the environment and then
+
+    $ jupyter notebook
+
+to fire up the notebook.
+
+## Print out the Git Novice lesson
+
+   $ nix-shell
+   $ cd ..
+   $ git clone https://github.com/swcarpentry/python-novice-gapminder.git
+   $ cd python-novice-gapminder/_episodes
+   $ wget https://gist.githubusercontent.com/jeromerobert/3996eca3acd12e4c3d40/raw/c51d688a58e5a1fd583c2df37226a5e632a064c2/pandoc-svg.py
+   $ for filename in ??-*.md; do pandoc --pdf-engine=xelatex -o $(basename $filename .md).pdf -f markdown --filter=./pandoc-svg.py $filename; done
