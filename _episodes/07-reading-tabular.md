@@ -30,28 +30,31 @@ keypoints:
 ~~~
 import pandas
 
-data = pandas.read_csv('data/jarvis_data_subset2.csv')
+data = pandas.read_csv('data/jarvis_subset.csv')
 print(data)
 ~~~
 {: .python}
 ~~~
-           jid  encut     epsx     epsy     epsz      fin_en  form_enp  \
-0  JVASP-11997    500  21.0673  29.1228  17.6066  -12.242175     0.025
-1  JVASP-12002   1200  13.8023  38.1854  35.5515  -42.395911    -1.184
-2  JVASP-12010   1250   6.3933   6.9466   6.3796 -103.756610    -2.086
-3  JVASP-12023    550   6.0838   6.0838   6.5652    0.756760    -0.204
+      epsx     epsy     epsz      fin_en  form_enp      gv    icsd  kp_leng  \
+0  21.0673  29.1228  17.6066  -12.242175     0.025  19.993  609832       65
+1   6.3933   6.9466   6.3796 -103.756610    -2.086  52.420  158256       50
+2   6.0838   6.0838   6.5652    0.756760    -0.204   5.947   28230       60
+3   7.0316   6.3127   5.2274  -35.585506    -1.768  37.120   27393       55
+4   4.6738   4.7460   4.7722   -4.653860    -0.830   9.047   65198       55
 
-       gv    icsd  kp_leng      kv  mbj_gap    mepsx    mepsy    mepsz  \
-0  19.993  609832       65  34.556   0.6495  15.0619  14.9875  12.4788
-1  25.667    None       55  78.478   0.0083  16.5818  61.5222  53.1874
-2  52.420  158256       50  75.067   2.4642   5.2402   5.8492   5.3897
-3   5.947   28230       60  17.478   2.7025   4.5320   4.5323   4.9101
+       kv  mbj_gap    mepsx    mepsy    mepsz       mpid  op_gap          jid  \
+0  34.556   0.6495  15.0619  14.9875  12.4788     mp-158  0.0221  JVASP-11997
+1  75.067   2.4642   5.2402   5.8492   5.3897  mp-510584  1.9202  JVASP-12010
+2  17.478   2.7025   4.5320   4.5323   4.9101  mp-567809  1.2599  JVASP-12023
+3  54.633   2.2441   6.0366   5.5260   4.6886  mp-570157  1.8723  JVASP-12027
+4  16.378   3.7113   3.6685   3.7637   3.7977  mp-570219  2.3104  JVASP-12028
 
-        mpid  op_gap
-0     mp-158  0.0221
-1   mp-24242  0.0038
-2  mp-510584  1.9202
-3  mp-567809  1.2599
+  formula
+0      As
+1    MoO3
+2     AgI
+3   ZrBrN
+4   InBr3
 ~~~
 {: .output}
 
@@ -61,14 +64,14 @@ print(data)
 > ## File Not Found
 >
 > Our lessons store their data files in a `data` sub-directory,
-> which is why the path to the file is `data/jarvis_data_subset2.csv`.
+> which is why the path to the file is `data/jarvis_subset.csv`.
 > If you forget to include `data/`,
 > or if you include it but your copy of the file is somewhere else,
 > you will get a [runtime error]({{ page.root }}/05-error-messages/)
 > that ends with a line like this:
 >
 > ~~~
-> OSError: File b'jarvis_data_subset2.csv' does not exist
+> OSError: File b'jarvis_subset.csv' does not exist
 > ~~~
 > {: .error}
 {: .callout}
@@ -87,7 +90,7 @@ columns can be interpred as
  * `jid`: JARVIS calculation ID
  * `icsd`: International Crystal Structure Database (ICSD) ID
  * `mpid`: Materials Project structure ID
- * `form_enp`: formation energy per atom (eV/atom)
+ * `form_enp`: Formation energy per atom (eV/atom)
  * `op_gap`: OptB88vdW functional based bandgap (eV)
  *  `mbj_gap`: TBmBJ functional based bandgap (eV)
  * `kv`: Voigt bulk mod. (GPa)
@@ -95,21 +98,17 @@ columns can be interpred as
  * `epsx`: Static dielctric function value in x-direction based on OptB88vdW (no unit)
  * `mepsx`: Static dielctric function value in x-direction based on TBmBJ (no unit)
  * `kp_leng`: Kpoint automatic line density obtained after automatic
-   convergence (Angstrom), substract 25 because 5 extra points were
-   taken during convergence
+   convergence (Angstrom)
  * `encut`: Plane wave cut-off value obtained after automatic convergence
  * `formula`: the reduced formula of the material
 
+To get more details about each material go to the [JARVIS
+website](https://www.ctcms.nist.gov/~knc6/JARVIS.html) using the `jid` value. For example,
+to get details about `As` (`JVASP-11997`), go to
 
-['encut', 'epsx', 'fin_en', 'form_enp', 'gv', 'icsd', 'jid', 'kp_leng', 'kv', 'mbj_gap', 'mepsx', 'mepsy', 'mpid', 'op_gap', 'formula']
+  * [https://www.ctcms.nist.gov/~knc6/jsmol/JVASP-11997]()
 
-
-To get more details about the materials go to
-
-  * https://www.ctcms.nist.gov/~knc6/jsmol/JVASP-11997
-
-for example, use the `jid` column value in the last section of the
-path.
+The page shows postprocessed results from VASP calculations.
 
 ## Use `index_col` to specify that a column's values should be used as row headings.
 
@@ -118,31 +117,34 @@ path.
 *   Pass the name of the column to `read_csv` as its `index_col` parameter to do this.
 
 ~~~
-data = pandas.read_csv('data/jarvis_data_subset2.csv', index_col='jid')
+data = pandas.read_csv('data/jarvis_subset.csv', index_col='jid')
 print(data)
 ~~~
 {: .python}
 ~~~
-             encut     epsx     epsy     epsz      fin_en  form_enp      gv  \
+               epsx     epsy     epsz      fin_en  form_enp      gv    icsd  \
 jid
-JVASP-11997    500  21.0673  29.1228  17.6066  -12.242175     0.025  19.993
-JVASP-12002   1200  13.8023  38.1854  35.5515  -42.395911    -1.184  25.667
-JVASP-12010   1250   6.3933   6.9466   6.3796 -103.756610    -2.086  52.420
-JVASP-12023    550   6.0838   6.0838   6.5652    0.756760    -0.204   5.947
+JVASP-11997  21.0673  29.1228  17.6066  -12.242175     0.025  19.993  609832
+JVASP-12010   6.3933   6.9466   6.3796 -103.756610    -2.086  52.420  158256
+JVASP-12023   6.0838   6.0838   6.5652    0.756760    -0.204   5.947   28230
+JVASP-12027   7.0316   6.3127   5.2274  -35.585506    -1.768  37.120   27393
+JVASP-12028   4.6738   4.7460   4.7722   -4.653860    -0.830   9.047   65198
 
-               icsd  kp_leng      kv  mbj_gap    mepsx    mepsy    mepsz  \
+             kp_leng      kv  mbj_gap    mepsx    mepsy    mepsz       mpid  \
 jid
-JVASP-11997  609832       65  34.556   0.6495  15.0619  14.9875  12.4788
-JVASP-12002    None       55  78.478   0.0083  16.5818  61.5222  53.1874
-JVASP-12010  158256       50  75.067   2.4642   5.2402   5.8492   5.3897
-JVASP-12023   28230       60  17.478   2.7025   4.5320   4.5323   4.9101
+JVASP-11997       65  34.556   0.6495  15.0619  14.9875  12.4788     mp-158
+JVASP-12010       50  75.067   2.4642   5.2402   5.8492   5.3897  mp-510584
+JVASP-12023       60  17.478   2.7025   4.5320   4.5323   4.9101  mp-567809
+JVASP-12027       55  54.633   2.2441   6.0366   5.5260   4.6886  mp-570157
+JVASP-12028       55  16.378   3.7113   3.6685   3.7637   3.7977  mp-570219
 
-                  mpid  op_gap
+             op_gap formula
 jid
-JVASP-11997     mp-158  0.0221
-JVASP-12002   mp-24242  0.0038
-JVASP-12010  mp-510584  1.9202
-JVASP-12023  mp-567809  1.2599
+JVASP-11997  0.0221      As
+JVASP-12010  1.9202    MoO3
+JVASP-12023  1.2599     AgI
+JVASP-12027  1.8723   ZrBrN
+JVASP-12028  2.3104   InBr3
 ~~~
 {: .output}
 
@@ -154,34 +156,34 @@ data.info()
 {: .python}
 ~~~
 <class 'pandas.core.frame.DataFrame'>
-Index: 4 entries, JVASP-11997 to JVASP-12023
+Index: 5 entries, JVASP-11997 to JVASP-12028
 Data columns (total 16 columns):
-encut       4 non-null int64
-epsx        4 non-null float64
-epsy        4 non-null float64
-epsz        4 non-null float64
-fin_en      4 non-null float64
-form_enp    4 non-null float64
-gv          4 non-null float64
-icsd        4 non-null object
-kp_leng     4 non-null int64
-kv          4 non-null float64
-mbj_gap     4 non-null float64
-mepsx       4 non-null float64
-mepsy       4 non-null float64
-mepsz       4 non-null float64
-mpid        4 non-null object
-op_gap      4 non-null float64
+epsx        5 non-null float64
+epsy        5 non-null float64
+epsz        5 non-null float64
+fin_en      5 non-null float64
+form_enp    5 non-null float64
+gv          5 non-null float64
+icsd        5 non-null int64
+kp_leng     5 non-null int64
+kv          5 non-null float64
+mbj_gap     5 non-null float64
+mepsx       5 non-null float64
+mepsy       5 non-null float64
+mepsz       5 non-null float64
+mpid        5 non-null object
+op_gap      5 non-null float64
+formula     5 non-null object
 dtypes: float64(12), int64(2), object(2)
-memory usage: 544.0+ bytes
+memory usage: 840.0+ bytes
 ~~~
 {: .output}
 
 *   This is a `DataFrame`
-*   Four rows named `'JVASP-XXXXX'`
+*   Five rows named `'JVASP-XXXXX'`
 *   Sixteen columns, most of which has two actual 64-bit floating point values.
     *   We will talk later about null values, which are used to represent missing observations.
-*   Uses 544 bytes of memory.
+*   Uses 840 bytes of memory.
 
 ## The `DataFrame.columns` variable stores information about the dataframe's columns.
 
@@ -195,9 +197,9 @@ print(data.columns)
 ~~~
 {: .python}
 ~~~
-Index(['encut', 'epsx', 'epsy', 'epsz', 'fin_en', 'form_enp', 'gv', 'icsd',
-       'kp_leng', 'kv', 'mbj_gap', 'mepsx', 'mepsy', 'mepsz', 'mpid',
-       'op_gap'],
+Index(['epsx', 'epsy', 'epsz', 'fin_en', 'form_enp', 'gv', 'icsd', 'kp_leng',
+       'kv', 'mbj_gap', 'mepsx', 'mepsy', 'mepsz', 'mpid', 'op_gap',
+       'formula'],
       dtype='object')
 ~~~
 {: .output}
@@ -213,23 +215,23 @@ print(data.T)
 ~~~
 {: .python}
 ~~~
-jid      JVASP-11997 JVASP-12002 JVASP-12010 JVASP-12023
-encut            500        1200        1250         550
-epsx         21.0673     13.8023      6.3933      6.0838
-epsy         29.1228     38.1854      6.9466      6.0838
-epsz         17.6066     35.5515      6.3796      6.5652
-fin_en      -12.2422    -42.3959    -103.757     0.75676
-form_enp       0.025      -1.184      -2.086      -0.204
-gv            19.993      25.667       52.42       5.947
-icsd          609832        None      158256       28230
-kp_leng           65          55          50          60
-kv            34.556      78.478      75.067      17.478
-mbj_gap       0.6495      0.0083      2.4642      2.7025
-mepsx        15.0619     16.5818      5.2402       4.532
-mepsy        14.9875     61.5222      5.8492      4.5323
-mepsz        12.4788     53.1874      5.3897      4.9101
-mpid          mp-158    mp-24242   mp-510584   mp-567809
-op_gap        0.0221      0.0038      1.9202      1.2599
+jid      JVASP-11997 JVASP-12010 JVASP-12023 JVASP-12027 JVASP-12028
+epsx         21.0673      6.3933      6.0838      7.0316      4.6738
+epsy         29.1228      6.9466      6.0838      6.3127       4.746
+epsz         17.6066      6.3796      6.5652      5.2274      4.7722
+fin_en      -12.2422    -103.757     0.75676    -35.5855    -4.65386
+form_enp       0.025      -2.086      -0.204      -1.768       -0.83
+gv            19.993       52.42       5.947       37.12       9.047
+icsd          609832      158256       28230       27393       65198
+kp_leng           65          50          60          55          55
+kv            34.556      75.067      17.478      54.633      16.378
+mbj_gap       0.6495      2.4642      2.7025      2.2441      3.7113
+mepsx        15.0619      5.2402       4.532      6.0366      3.6685
+mepsy        14.9875      5.8492      4.5323       5.526      3.7637
+mepsz        12.4788      5.3897      4.9101      4.6886      3.7977
+mpid          mp-158   mp-510584   mp-567809   mp-570157   mp-570219
+op_gap        0.0221      1.9202      1.2599      1.8723      2.3104
+formula           As        MoO3         AgI       ZrBrN       InBr3
 ~~~
 {: .output}
 
@@ -242,53 +244,54 @@ print(data.describe())
 ~~~
 {: .python}
 ~~~
-             encut       epsx      epsy       epsz      fin_en  form_enp  \
-count     4.000000   4.000000   4.00000   4.000000    4.000000   4.00000
-mean    875.000000  11.836675  20.08465  16.525725  -39.409484  -0.86225
-std     405.174859   7.113228  16.10339  13.727155   46.550550   0.96981
-min     500.000000   6.083800   6.08380   6.379600 -103.756610  -2.08600
-25%     537.500000   6.315925   6.73090   6.518800  -57.736086  -1.40950
-50%     875.000000  10.097800  18.03470  12.085900  -27.319043  -0.69400
-75%    1212.500000  15.618550  31.38845  22.092825   -8.992441  -0.14675
-max    1250.000000  21.067300  38.18540  35.551500    0.756760   0.02500
+            epsx       epsy       epsz      fin_en  form_enp        gv  \
+count   5.000000   5.000000   5.000000    5.000000  5.000000   5.00000
+mean    9.049960  10.642380   8.110200  -31.096278 -0.972600  24.90540
+std     6.773053  10.361935   5.362285   42.921358  0.932551  19.62964
+min     4.673800   4.746000   4.772200 -103.756610 -2.086000   5.94700
+25%     6.083800   6.083800   5.227400  -35.585506 -1.768000   9.04700
+50%     6.393300   6.312700   6.379600  -12.242175 -0.830000  19.99300
+75%     7.031600   6.946600   6.565200   -4.653860 -0.204000  37.12000
+max    21.067300  29.122800  17.606600    0.756760  0.025000  52.42000
 
-             gv    kp_leng         kv   mbj_gap      mepsx      mepsy  \
-count   4.00000   4.000000   4.000000  4.000000   4.000000   4.000000
-mean   26.00675  57.500000  51.394750  1.456125  10.353975  21.722800
-std    19.46222   6.454972  30.153868  1.331228   6.350760  26.937217
-min     5.94700  50.000000  17.478000  0.008300   4.532000   4.532300
-25%    16.48150  53.750000  30.286500  0.489200   5.063150   5.519975
-50%    22.83000  57.500000  54.811500  1.556850  10.151050  10.418350
-75%    32.35525  61.250000  75.919750  2.523775  15.441875  26.621175
-max    52.42000  65.000000  78.478000  2.702500  16.581800  61.522200
+                icsd    kp_leng         kv   mbj_gap      mepsx      mepsy  \
+count       5.000000   5.000000   5.000000  5.000000   5.000000   5.000000
+mean   177781.800000  57.000000  39.622400  2.354320   6.907840   6.931740
+std    247338.976031   5.700877  25.189198  1.106035   4.641301   4.578129
+min     27393.000000  50.000000  16.378000  0.649500   3.668500   3.763700
+25%     28230.000000  55.000000  17.478000  2.244100   4.532000   4.532300
+50%     65198.000000  55.000000  34.556000  2.464200   5.240200   5.526000
+75%    158256.000000  60.000000  54.633000  2.702500   6.036600   5.849200
+max    609832.000000  65.000000  75.067000  3.711300  15.061900  14.987500
 
            mepsz    op_gap
-count   4.000000  4.000000
-mean   18.991500  0.801500
-std    23.058401  0.949633
-min     4.910100  0.003800
-25%     5.269800  0.017525
-50%     8.934250  0.641000
-75%    22.655950  1.424975
-max    53.187400  1.920200
+count   5.000000  5.000000
+mean    6.252980  1.476980
+std     3.527928  0.895979
+min     3.797700  0.022100
+25%     4.688600  1.259900
+50%     4.910100  1.872300
+75%     5.389700  1.920200
+max    12.478800  2.310400
 ~~~
 {: .output}
 
-*   Not particularly useful with just two records,
+*   Not particularly useful with just five records,
     but very helpful when there are thousands.
 
 > ## Reading Other Data
 >
-> Read the data in `gapminder_gdp_americas.csv`
-> (which should be in the same directory as `gapminder_gdp_oceania.csv`)
-> into a variable called `americas`
+> Read the data in `jarvis_all.csv`
+> (which should be in the same directory as `jarvis_subset.csv`)
+> into a variable called `data_all`
 > and display its summary statistics.
 >
 > > ## Solution
-> > To read in a CSV, we use `pandas.read_csv` and pass the filename 'data/gapminder_gdp_americas.csv' to it. We also once again pass the
-> > column name 'country' to the parameter `index_col` in order to index by country:
+> > To read in a CSV, we use `pandas.read_csv` and pass the filename `data/jarvis_all.csv` to it. We also once again pass the
+> > column name `jid` to the parameter `index_col` in order to index by country:
 > > ~~~
-> > americas = pandas.read_csv('data/gapminder_gdp_americas.csv', index_col='country')
+> > data_all = pandas.read_csv('data/jarvis_all.csv', index_col='jid')
+> > data_all.describe()
 > > ~~~
 > >{: .python}
 > {: .solution}
@@ -298,8 +301,8 @@ max    53.187400  1.920200
 
 > ## Inspecting Data.
 >
-> After reading the data for the Americas,
-> use `help(americas.head)` and `help(americas.tail)`
+> After reading the Jarvis data,
+> use `help(data_all.head)` and `help(data_all.tail)`
 > to find out what `DataFrame.head` and `DataFrame.tail` do.
 >
 > 1.  What method call will display the first three rows of this data?
@@ -307,83 +310,33 @@ max    53.187400  1.920200
 >     (Hint: you may need to change your view of the data.)
 >
 > > ## Solution
-> > 1. We can check out the first five rows of `americas` by executing `americas.head()` (allowing us to view the head
+> > 1. We can check out the first five rows of `data_all` by executing `data_all.head()` (allowing us to view the head
 > > of the DataFrame). We can specify the number of rows we wish to see by specifying the parameter `n` in our call
-> > to `americas.head()`. To view the first three rows, execute:
+> > to `data_all.head()`. To view the first three rows, execute:
 > >
 > > ~~~
-> > americas.head(n=3)
+> > data_all.head(n=3)
 > > ~~~
 > >{: .python}
-> >
-> > The output is then
-> > ~~~
-> >          continent  gdpPercap_1952  gdpPercap_1957  gdpPercap_1962  \
-> >country
-> >Argentina  Americas     5911.315053     6856.856212     7133.166023
-> >Bolivia    Americas     2677.326347     2127.686326     2180.972546
-> >Brazil     Americas     2108.944355     2487.365989     3336.585802
-> >
-> >           gdpPercap_1967  gdpPercap_1972  gdpPercap_1977  gdpPercap_1982  \
-> >country
-> >Argentina     8052.953021     9443.038526    10079.026740     8997.897412
-> >Bolivia       2586.886053     2980.331339     3548.097832     3156.510452
-> >Brazil        3429.864357     4985.711467     6660.118654     7030.835878
-> >
-> >           gdpPercap_1987  gdpPercap_1992  gdpPercap_1997  gdpPercap_2002  \
-> >country
-> >Argentina     9139.671389     9308.418710    10967.281950     8797.640716
-> >Bolivia       2753.691490     2961.699694     3326.143191     3413.262690
-> >Brazil        7807.095818     6950.283021     7957.980824     8131.212843
-> >
-> >           gdpPercap_2007
-> >country
-> >Argentina    12779.379640
-> >Bolivia       3822.137084
-> >Brazil        9065.800825
-> > ~~~
-> >{: .output}
-> > 2. To check out the last three rows of `americas`, we would use the command, `americas.tail(n=3)`,
+> > 2. To check out the last three rows of `data_all`, we would use the command, `data_all.tail(n=3)`,
 > > analogous to `head()` used above. However, here we want to look at the last three columns so we need
 > > to change our view and then use `tail()`. To do so, we create a new DataFrame in which rows and
 > > columns are switched
 > >
 > > ~~~
-> > americas_flipped = americas.T
+> > data_all_flipped = data_all.T
 > > ~~~
 > >{: .python}
 > >
-> > We can then view the last three columns of `americas` by viewing the last three rows of `americas_flipped`:
+> > We can then view the last three columns of `data_all` by viewing the last three rows of `data_all_flipped`:
 > > ~~~
-> > americas_flipped.tail(n=3)
+> > data_all_flipped.tail(n=3)
 > > ~~~
 > >{: .python}
-> > The output is then
-> > ~~~
-> > country        Argentina  Bolivia   Brazil   Canada    Chile Colombia  \
-> > gdpPercap_1997   10967.3  3326.14  7957.98  28954.9  10118.1  6117.36
-> > gdpPercap_2002   8797.64  3413.26  8131.21    33329  10778.8  5755.26
-> > gdpPercap_2007   12779.4  3822.14   9065.8  36319.2  13171.6  7006.58
 > >
-> > country        Costa Rica     Cuba Dominican Republic  Ecuador    ...     \
-> > gdpPercap_1997    6677.05  5431.99             3614.1  7429.46    ...
-> > gdpPercap_2002    7723.45  6340.65            4563.81  5773.04    ...
-> > gdpPercap_2007    9645.06   8948.1            6025.37  6873.26    ...
-> >
-> > country          Mexico Nicaragua   Panama Paraguay     Peru Puerto Rico  \
-> > gdpPercap_1997   9767.3   2253.02  7113.69   4247.4  5838.35     16999.4
-> > gdpPercap_2002  10742.4   2474.55  7356.03  3783.67  5909.02     18855.6
-> > gdpPercap_2007  11977.6   2749.32  9809.19  4172.84  7408.91     19328.7
-> >
-> > country        Trinidad and Tobago United States  Uruguay Venezuela
-> > gdpPercap_1997             8792.57       35767.4  9230.24   10165.5
-> > gdpPercap_2002             11460.6       39097.1     7727   8605.05
-> > gdpPercap_2007             18008.5       42951.7  10611.5   11415.8
-> > ~~~
-> >{: .output}
 > > Note: we could have done the above in a single line of code by 'chaining' the commands:
 > > ~~~
-> > americas.T.tail(n=3)
+> > data_all.T.tail(n=3)
 > > ~~~
 > >{: .python}
 > {: .solution}
@@ -426,18 +379,18 @@ max    53.187400  1.920200
 > write one of your dataframes to a file called `processed.csv`.
 > You can use `help` to get information on how to use `to_csv`.
 > > ## Solution
-> > In order to write the DataFrame `americas` to a file called `processed.csv`, execute the following command:
+> > In order to write the DataFrame `data_all` to a file called `processed.csv`, execute the following command:
 > > ~~~
-> > americas.to_csv('processed.csv')
+> > data_all.to_csv('processed.csv')
 > > ~~~
 > >{: .python}
 > > For help on `to_csv`, you could execute, for example,
 > > ~~~
-> > help(americas.to_csv)
+> > help(data_all.to_csv)
 > > ~~~
 > >{: .python}
 > > Note that `help(to_csv)` throws an error! This is a subtlety and is due to the fact that `to_csv` is NOT a function in
-> > and of itself and the actual call is `americas.to_csv`.
+> > and of itself and the actual call is `data_all.to_csv`.
 > >
 > {: .solution}
 {: .challenge}
