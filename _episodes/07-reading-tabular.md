@@ -82,10 +82,12 @@ The data used in these examples is from the [JARVIS
 project](https://github.com/usnistgov/jarvis) run at NIST by [Kamal
 Choudary](https://github.com/knc6), see [this
 example](https://github.com/usnistgov/jarvis/blob/master/jarvis/db/static/jarvis_dft-explore.ipynb)
-for more details. The data is generated from a series of
-[VASP](https://www.vasp.at/), a density functional theory code,
-calculations and then post-processed by JARVIS tools. The labeled
-columns in the dataframe refer to,
+for more details. The data is generated using JARVIS to automate a
+series of [VASP](https://www.vasp.at/) (a density functional theory
+code) calculations and then post-process the results for each
+individual material, see [these
+publications](https://www.ctcms.nist.gov/~knc6/pubs.html) for more
+details. The labeled columns in the dataframe refer to,
 
  * `jid`: JARVIS calculation ID
  * `icsd`: International Crystal Structure Database (ICSD) ID
