@@ -84,8 +84,8 @@ Choudary](https://github.com/knc6), see [this
 example](https://github.com/usnistgov/jarvis/blob/master/jarvis/db/static/jarvis_dft-explore.ipynb)
 for more details. The data is generated from a series of
 [VASP](https://www.vasp.at/), a density functional theory code,
-calculations and then postprocessed by JARVIS tools. The labeled
-columns can be interpred as
+calculations and then post-processed by JARVIS tools. The labeled
+columns in the dataframe refer to,
 
  * `jid`: JARVIS calculation ID
  * `icsd`: International Crystal Structure Database (ICSD) ID
@@ -102,13 +102,13 @@ columns can be interpred as
  * `encut`: Plane wave cut-off value obtained after automatic convergence
  * `formula`: the reduced formula of the material
 
-To get more details about each material go to the [JARVIS
-website](https://www.ctcms.nist.gov/~knc6/JARVIS.html) using the `jid` value. For example,
-to get details about `As` (`JVASP-11997`), go to
+To get more details about each material in the dataframe, go to the
+[JARVIS website](https://www.ctcms.nist.gov/~knc6/JARVIS.html) using
+the `jid` value. For example, to get details about `As`
+(`JVASP-11997`), go to
+[https://www.ctcms.nist.gov/~knc6/jsmol/JVASP-11997]().
 
-  * [https://www.ctcms.nist.gov/~knc6/jsmol/JVASP-11997]()
-
-The page shows postprocessed results from VASP calculations.
+The page shows post-processed results from VASP calculations.
 
 ## Use `index_col` to specify that a column's values should be used as row headings.
 
