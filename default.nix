@@ -10,7 +10,7 @@ let
   pypkgs = nixpkgs.python36Packages;
   texlive = nixpkgs.pkgs.texlive;
   # latex = (texlive.combine { inherit (texlive) scheme-medium collection-latexextra collection-fontsrecommended; });
-  latex = (texlive.combine { inherit (texlive) scheme-medium; });
+  latex = (texlive.combine { inherit (texlive) scheme-medium type1cm units; });
 in
   nixpkgs.stdenv.mkDerivation rec {
      name = "swc-jhu";

@@ -46,95 +46,76 @@ plt.ylabel('Position (km)')
 *   Before plotting, we convert the column headings from a `string` to `integer` data type, since they represent numerical values
 
 ~~~
+%matplotlib inline
+import matplotlib.pyplot as plt
 import pandas
 
-data = pandas.read_csv('data/gapminder_gdp_oceania.csv', index_col='country')
-
-# Extract year from last 4 characters of each column name
-years = data.columns.str.strip('gdpPercap_')
-# Convert year values to integers, saving results back to dataframe
-data.columns = years.astype(int)
-
-data.loc['Australia'].plot()
+plt.style.use('ggplot')
+data_all = pandas.read_csv('data/jarvis_all.csv', index_col='formula')
+eps = data_all.loc['Si', 'epsx':'epsz']
+eps.plot(kind="bar");
 ~~~
 {: .language-python}
 
-![GDP plot for Australia](../fig/9_gdp_australia.png)
+![GDP plot for Australia](../fig/9_jarvis_si.png)
 ## Select and transform data, then plot it.
 
 *   By default, [`DataFrame.plot`](https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.plot.html#pandas.DataFrame.plot) plots with the rows as the X axis.
 *   We can transpose the data in order to plot multiple series.
 
 ~~~
-data.T.plot()
-plt.ylabel('GDP per capita')
+eps.T.plot(kind="bar")
+plt.ylabel('epsX value');
 ~~~
 {: .language-python}
 
-![GDP plot for Australia and New Zealand](../fig/9_gdp_australia_nz.png)
-## Many styles of plot are available.
-
-*   For example, do a bar plot using a fancier style.
-
-~~~
-plt.style.use('ggplot')
-data.T.plot(kind='bar')
-plt.ylabel('GDP per capita')
-~~~
-{: .language-python}
-
-![GDP barplot for Australia](../fig/9_gdp_bar.png)
+![GDP plot for Australia and New Zealand](../fig/9_jarvis_si_t.png)
 
 ## Data can also be plotted by calling the `matplotlib` `plot` function directly.
 *   The command is `plt.plot(x, y)`
 *   The color / format of markers can also be specified as an optical argument: e.g. 'b-' is a blue line, 'g--' is a green dashed line.
 
-## Get Australia data from dataframe
+## Get formation energy data from dataframe
 
 ~~~
-years = data.columns
-gdp_australia = data.loc['Australia']
-
-plt.plot(years, gdp_australia, 'g--')
+form_emp = data_all.form_enp.sort_values()
+plt.plot(form_emp.values, 'g--')
 ~~~
 {: .language-python}
 
-![GDP formatted plot for Australia](../fig/9_gdp_australia_formatted.png)
+![GDP formatted plot for Australia](../fig/9_form_enp.png)
 
 ## Can plot many sets of data together.
 
 ~~~
-# Select two countries' worth of data.
-gdp_australia = data.loc['Australia']
-gdp_nz = data.loc['New Zealand']
+data_sort = data_all.sort_values('op_gap')
 
-# Plot with differently-colored markers.
-plt.plot(years, gdp_australia, 'b-', label='Australia')
-plt.plot(years, gdp_nz, 'g-', label='New Zealand')
-
-# Create legend.
+plt.plot(data_sort.op_gap.values, 'g-', lw=2, label=r'op-gap')
+plt.plot(data_sort.mbj_gap.values, 'b.', ms=1, label=r'mbj-gap')
 plt.legend(loc='upper left')
-plt.xlabel('Year')
-plt.ylabel('GDP per capita ($)')
+plt.xlabel('Sorted Index')
+plt.ylabel('Band gap (eV)');
 ~~~
 {: .language-python}
 
-![GDP formatted plot for Australia and New Zealand](../fig/9_gdp_australia_nz_formatted.png)
-*   Plot a scatter plot correlating the GDP of Australia and New Zealand
+![GDP formatted plot for Australia and New Zealand](../fig/9_conv.png)
+*   Plot a scatter plot correlating the MBJ and OP band gap measurements.
 *   Use either `plt.scatter` or `DataFrame.plot.scatter`
 
 ~~~
-plt.scatter(gdp_australia, gdp_nz)
+lim = [0, 15]
+plt.scatter(data_all.mbj_gap, data_all.op_gap, s=1.5, c='g')
+plt.xlim(lim)
+plt.ylim(lim)
+plt.plot(lim, lim, 'k--')
+plt.axes().set_aspect('equal')
+plt.xlabel('mbj (eV)')
+plt.ylabel('op (eV)');
 ~~~
 {: .language-python}
 
-![GDP correlation using plt.scatter](../fig/9_gdp_correlation_plt.png)
-~~~
-data.T.plot.scatter(x = 'Australia', y = 'New Zealand')
-~~~
-{: .language-python}
+![GDP correlation using plt.scatter](../fig/9_conv_scatter.png)
 
-![GDP correlation using data.T.plot.scatter](../fig/9_gdp_correlation_data.png)
 > ## Minima and Maxima
 >
 > Fill in the blanks below to plot the minimum GDP per capita over time
@@ -243,7 +224,7 @@ data.T.plot.scatter(x = 'Australia', y = 'New Zealand')
 {: .challenge}
 
 > ## Saving your plot to a file
-> 
+>
 > If you are satisfied with the plot you see you may want to save it to a file,
 > perhaps to include it in a publication. There is a function in the
 > matplotlib.pyplot module that accomplishes this:
@@ -253,13 +234,13 @@ data.T.plot.scatter(x = 'Australia', y = 'New Zealand')
 > plt.savefig('my_figure.png')
 > ~~~
 > {: .language-python}
-> 
+>
 > will save the current figure to the file `my_figure.png`. The file format
 > will automatically be deduced from the file name extension (other formats
 > are pdf, ps, eps and svg).
 >
 > Note that functions in `plt` refer to a global figure variable
-> and after a figure has been displayed to the screen (e.g. with `plt.show`) 
+> and after a figure has been displayed to the screen (e.g. with `plt.show`)
 > matplotlib will make this  variable refer to a new empty figure.
 > Therefore, make sure you call `plt.savefig` before the plot is displayed to
 > the screen, otherwise you may find a file with an empty plot.
@@ -268,7 +249,7 @@ data.T.plot.scatter(x = 'Australia', y = 'New Zealand')
 > and `plt.savefig` seems not to be a possible approach.
 > One possibility to save the figure to file is then to
 >
-> * save a reference to the current figure in a local variable (with `plt.gcf`) 
+> * save a reference to the current figure in a local variable (with `plt.gcf`)
 > * call the `savefig` class method from that varible.
 >
 > ~~~
@@ -278,5 +259,3 @@ data.T.plot.scatter(x = 'Australia', y = 'New Zealand')
 > ~~~
 > {: .language-python}
 {: .callout}
-
-
