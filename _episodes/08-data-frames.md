@@ -284,7 +284,7 @@ InBr3    2.161897  2.178532  2.184537  2.161897
 {: .output}
 Two of the entries for Silicon have low birefringence.
 ~~~
-birefringence = dielectric_sq.diff(axis=1).aggregate('max', axis=1)
+birefringence = dielectric_sq.diff(axis=1).apply('abs').aggregate('max', axis=1)
 print(birefringence.iloc[10:20])
 print()
 print(birefringence.loc["Si"])
@@ -295,9 +295,9 @@ formula
 VOF3         0.193174
 ZnCl2        0.002078
 ScHO2        0.026299
-Zr(MoO4)2    0.168030
+Zr(MoO4)2    0.168051
 CoF2         0.984077
-RbPS3        0.063275
+RbPS3        0.111686
 BeO          0.000000
 CaCl2        0.030760
 SrClF        0.018030
