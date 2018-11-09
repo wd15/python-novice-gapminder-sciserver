@@ -267,7 +267,9 @@ determine materials that are optically isotropic.
 
 ~~~
 import numpy
-dielectric_sq = data_all[['epsx', 'epsy', 'epsz', 'epsx']].apply(np.sqrt)
+
+dielectric_sq = data_all[['epsx', 'epsy', 'epsz', 'epsx']].apply(numpy.sqrt)
+print(dielectric_sq.iloc[:5])
 ~~~
 {: .language-python}
 ~~~
@@ -318,7 +320,7 @@ print(isotropic[:10])
 ~~~
 {: .language-python}
 ~~~
-ormula
+formula
 BeO         0.0
 SrCl2       0.0
 NbSbRu      0.0
