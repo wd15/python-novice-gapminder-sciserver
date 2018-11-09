@@ -45,12 +45,12 @@ uniquely identifies its *entry* in the DataFrame.
 
 ~~~
 import pandas
-data = pandas.read_csv('data/gapminder_gdp_europe.csv', index_col='country')
-print(data.iloc[0, 0])
+data_all = pandas.read_csv('data/jarvis_all.csv', index_col='formula')
+print(data_all.iloc[0, 0])
 ~~~
 {: .language-python}
 ~~~
-1601.056136
+21.0673
 ~~~
 {: .output}
 
@@ -59,12 +59,12 @@ print(data.iloc[0, 0])
 *   Can specify location by row name analogously to 2D version of dictionary keys.
 
 ~~~
-data = pandas.read_csv('data/gapminder_gdp_europe.csv', index_col='country')
-print(data.loc["Albania", "gdpPercap_1952"])
+data_subset = pandas.read_csv('data/jarvis_subset.csv', index_col='formula')
+print(data_subset.loc["As", "epsx"])
 ~~~
 {: .language-python}
 ~~~
-1601.056136
+21.0673
 ~~~
 {: .output}
 ## Use `:` on its own to mean all columns or all rows.
@@ -72,68 +72,72 @@ print(data.loc["Albania", "gdpPercap_1952"])
 *   Just like Python's usual slicing notation.
 
 ~~~
-print(data.loc["Albania", :])
+print(data_subset.loc["As", :])
 ~~~
 {: .language-python}
 ~~~
-gdpPercap_1952    1601.056136
-gdpPercap_1957    1942.284244
-gdpPercap_1962    2312.888958
-gdpPercap_1967    2760.196931
-gdpPercap_1972    3313.422188
-gdpPercap_1977    3533.003910
-gdpPercap_1982    3630.880722
-gdpPercap_1987    3738.932735
-gdpPercap_1992    2497.437901
-gdpPercap_1997    3193.054604
-gdpPercap_2002    4604.211737
-gdpPercap_2007    5937.029526
-Name: Albania, dtype: float64
+epsx            21.0673
+epsy            29.1228
+epsz            17.6066
+fin_en         -12.2422
+form_enp          0.025
+gv               19.993
+icsd             609832
+kp_leng              65
+kv               34.556
+mbj_gap          0.6495
+mepsx           15.0619
+mepsy           14.9875
+mepsz           12.4788
+mpid             mp-158
+op_gap           0.0221
+jid         JVASP-11997
+Name: As, dtype: object
 ~~~
 {: .output}
 
-*   Would get the same result printing `data.loc["Albania"]` (without a second index).
+*   Would get the same result printing `data_subset.loc["As"]` (without a second index).
 
 ~~~
-print(data.loc[:, "gdpPercap_1952"])
+print(data_subset.loc[:, "epsx"])
 ~~~
 {: .language-python}
 ~~~
-country
-Albania                    1601.056136
-Austria                    6137.076492
-Belgium                    8343.105127
-⋮ ⋮ ⋮
-Switzerland               14734.232750
-Turkey                     1969.100980
-United Kingdom             9979.508487
-Name: gdpPercap_1952, dtype: float64
+formula
+As       21.0673
+MoO3      6.3933
+AgI       6.0838
+ZrBrN     7.0316
+InBr3     4.6738
+Name: epsx, dtype: float64
 ~~~
 {: .output}
 
-*   Would get the same result printing `data["gdpPercap_1952"]`
-*   Also get the same result printing `data.gdpPercap_1952` (since it's a column name)
+*   Would get the same result printing `data_subset["epsx"]`
+*   Also get the same result printing `data_subset.epsx` (since it's a column name)
 
 ## Select multiple columns or rows using `DataFrame.loc` and a named slice.
 
 ~~~
-print(data.loc['Italy':'Poland', 'gdpPercap_1962':'gdpPercap_1972'])
+data_all_sorted = data_all.sort_index()
+print(data_all_sorted.loc['BaO':'BaS2', 'epsx':'epsz'])
 ~~~
 {: .language-python}
 ~~~
-             gdpPercap_1962  gdpPercap_1967  gdpPercap_1972
-country
-Italy           8243.582340    10022.401310    12269.273780
-Montenegro      4649.593785     5907.850937     7778.414017
-Netherlands    12790.849560    15363.251360    18794.745670
-Norway         13450.401510    16361.876470    18965.055510
-Poland          5338.752143     6557.152776     8006.506993
+            epsx     epsy     epsz
+formula
+BaO       5.0126   5.0126   4.4529
+BaO2      3.6134   3.6709   3.9081
+BaP3     11.5224  11.1754  10.7349
+BaPbO3    8.9412   9.0321   8.9705
+BaPdS2   10.5437   9.2255   7.9498
+BaS2      5.1928   6.7944   4.8265
 ~~~
 {: .output}
 
 In the above code, we discover that **slicing using `loc` is inclusive at both
 ends**, which differs from **slicing using `iloc`**, where slicing indicates
-everything up to but not including the final index. 
+everything up to but not including the final index.
 
 
 ## Result of slicing can be used in further operations.
@@ -144,25 +148,25 @@ everything up to but not including the final index.
 *   E.g., calculate max of a slice.
 
 ~~~
-print(data.loc['Italy':'Poland', 'gdpPercap_1962':'gdpPercap_1972'].max())
+print(data_all_sorted.loc['BaO':'BaS2', 'epsx':'epsz'].max())
 ~~~
 {: .language-python}
 ~~~
-gdpPercap_1962    13450.40151
-gdpPercap_1967    16361.87647
-gdpPercap_1972    18965.05551
+epsx    11.5224
+epsy    11.1754
+epsz    10.7349
 dtype: float64
 ~~~
 {: .output}
 
 ~~~
-print(data.loc['Italy':'Poland', 'gdpPercap_1962':'gdpPercap_1972'].min())
+print(data_all_sorted.loc['BaO':'BaS2', 'epsx':'epsz'].min())
 ~~~
 {: .language-python}
 ~~~
-gdpPercap_1962    4649.593785
-gdpPercap_1967    5907.850937
-gdpPercap_1972    7778.414017
+epsx    3.6134
+epsy    3.6709
+epsz    3.9081
 dtype: float64
 ~~~
 {: .output}
@@ -174,31 +178,33 @@ dtype: float64
 
 ~~~
 # Use a subset of data to keep output readable.
-subset = data.loc['Italy':'Poland', 'gdpPercap_1962':'gdpPercap_1972']
+subset = data_all_sorted.loc['BaO':'BaS2', 'epsx':'epsz']
 print('Subset of data:\n', subset)
 
 # Which values were greater than 10000 ?
-print('\nWhere are values large?\n', subset > 10000)
+print('\nWhere are values large?\n', subset > 6)
 ~~~
 {: .language-python}
 ~~~
-Subset of data:
-             gdpPercap_1962  gdpPercap_1967  gdpPercap_1972
-country
-Italy           8243.582340    10022.401310    12269.273780
-Montenegro      4649.593785     5907.850937     7778.414017
-Netherlands    12790.849560    15363.251360    18794.745670
-Norway         13450.401510    16361.876470    18965.055510
-Poland          5338.752143     6557.152776     8006.506993
+ubset of data:
+             epsx     epsy     epsz
+formula
+BaO       5.0126   5.0126   4.4529
+BaO2      3.6134   3.6709   3.9081
+BaP3     11.5224  11.1754  10.7349
+BaPbO3    8.9412   9.0321   8.9705
+BaPdS2   10.5437   9.2255   7.9498
+BaS2      5.1928   6.7944   4.8265
 
 Where are values large?
-            gdpPercap_1962 gdpPercap_1967 gdpPercap_1972
-country
-Italy                False           True           True
-Montenegro           False          False          False
-Netherlands           True           True           True
-Norway                True           True           True
-Poland               False          False          False
+           epsx   epsy   epsz
+formula
+BaO      False  False  False
+BaO2     False  False  False
+BaP3      True   True   True
+BaPbO3    True   True   True
+BaPdS2    True   True   True
+BaS2     False   True  False
 ~~~
 {: .output}
 
@@ -207,18 +213,19 @@ Poland               False          False          False
 *   A frame full of Booleans is sometimes called a *mask* because of how it can be used.
 
 ~~~
-mask = subset > 10000
+mask = subset > 6
 print(subset[mask])
 ~~~
 {: .language-python}
 ~~~
-             gdpPercap_1962  gdpPercap_1967  gdpPercap_1972
-country
-Italy                   NaN     10022.40131     12269.27378
-Montenegro              NaN             NaN             NaN
-Netherlands     12790.84956     15363.25136     18794.74567
-Norway          13450.40151     16361.87647     18965.05551
-Poland                  NaN             NaN             NaN
+            epsx     epsy     epsz
+formula
+BaO          NaN      NaN      NaN
+BaO2         NaN      NaN      NaN
+BaP3     11.5224  11.1754  10.7349
+BaPbO3    8.9412   9.0321   8.9705
+BaPdS2   10.5437   9.2255   7.9498
+BaS2         NaN   6.7944      NaN
 ~~~
 {: .output}
 
@@ -226,102 +233,103 @@ Poland                  NaN             NaN             NaN
 *   Useful because NaNs are ignored by operations like max, min, average, etc.
 
 ~~~
-print(subset[subset > 10000].describe())
+print(subset[subset > 6].describe())
 ~~~
 {: .language-python}
 ~~~
-       gdpPercap_1962  gdpPercap_1967  gdpPercap_1972
-count        2.000000        3.000000        3.000000
-mean     13120.625535    13915.843047    16676.358320
-std        466.373656     3408.589070     3817.597015
-min      12790.849560    10022.401310    12269.273780
-25%      12955.737547    12692.826335    15532.009725
-50%      13120.625535    15363.251360    18794.745670
-75%      13285.513523    15862.563915    18879.900590
-max      13450.401510    16361.876470    18965.055510
+            epsx       epsy       epsz
+count   3.000000   4.000000   3.000000
+mean   10.335767   9.056850   9.218400
+std     1.303102   1.792204   1.409002
+min     8.941200   6.794400   7.949800
+25%     9.742450   8.472675   8.460150
+50%    10.543700   9.128800   8.970500
+75%    11.033050   9.712975   9.852700
+max    11.522400  11.175400  10.734900
 ~~~
 {: .output}
 
 ## Select-Apply-Combine operations
 
-Pandas vectorizing methods and grouping operations are features that provide users 
-much flexibility to analyse their data.
+Pandas vectorizing methods and grouping operations are features that provide users
+much flexibility to analyze their data.
 
-For instance, let's say we want to have a clearer view on how the European countries 
-split themselves according to their GDP.
+For instance, let's say we want to calculate the
+[birefringence](https://en.wikipedia.org/wiki/Birefringence) and
+determine materials that are optically isotropic.
 
-1.  We may have a glance by splitting the countries in two groups during the years surveyed,
-    those who presented a GDP *higher* than the European average and those with a *lower* GDP.
-2.  We then estimate a *wealthy score* based on the historical (from 1962 to 2007) values,
-    where we account how many times a country has participated in the groups of *lower* or *higher* GDP
+
+1.  Firstly we isolate a dataframe with just the dielectric constants.
+2.  We then take the difference of the square root and find the
+    maximum. An optically isotropic material should be 0. For example,
+    Silicon should be optically isotropic.
+
 
 ~~~
-mask_higher = data.apply(lambda x:x>x.mean())
-wealth_score = mask_higher.aggregate('sum',axis=1)/len(data.columns)
-wealth_score
+import numpy
+dielectric_sq = data_all[['epsx', 'epsy', 'epsz', 'epsx']].apply(np.sqrt)
 ~~~
 {: .language-python}
 ~~~
-country
-Albania                   0.000000
-Austria                   1.000000
-Belgium                   1.000000
-Bosnia and Herzegovina    0.000000
-Bulgaria                  0.000000
-Croatia                   0.000000
-Czech Republic            0.500000
-Denmark                   1.000000
-Finland                   1.000000
-France                    1.000000
-Germany                   1.000000
-Greece                    0.333333
-Hungary                   0.000000
-Iceland                   1.000000
-Ireland                   0.333333
-Italy                     0.500000
-Montenegro                0.000000
-Netherlands               1.000000
-Norway                    1.000000
-Poland                    0.000000
-Portugal                  0.000000
-Romania                   0.000000
-Serbia                    0.000000
-Slovak Republic           0.000000
-Slovenia                  0.333333
-Spain                     0.333333
-Sweden                    1.000000
-Switzerland               1.000000
-Turkey                    0.000000
-United Kingdom            1.000000
+            epsx      epsy      epsz      epsx
+formula
+As       4.589913  5.396554  4.196022  4.589913
+MoO3     2.528498  2.635640  2.525787  2.528498
+AgI      2.466536  2.466536  2.562265  2.466536
+ZrBrN    2.651716  2.512509  2.286351  2.651716
+InBr3    2.161897  2.178532  2.184537  2.161897
+~~~
+{: .output}
+Two of the entries for Silicon have low birefringence.
+~~~
+birefringence = dielectrics_sq.diff(axis=1).aggregate('max', axis=1)
+print(birefringence.iloc[10:20])
+print()
+print(birefringence.loc["Si"])
+~~~
+{: .language-python}
+~~~
+formula
+VOF3         0.193174
+ZnCl2        0.002078
+ScHO2        0.026299
+Zr(MoO4)2    0.168030
+CoF2         0.984077
+RbPS3        0.063275
+BeO          0.000000
+CaCl2        0.030760
+SrClF        0.018030
+SrBrF        0.028253
+dtype: float64
+
+formula
+Si    0.122102
+Si    0.000000
+Si    0.000010
+Si    0.427006
+Si    0.200976
 dtype: float64
 ~~~
 {: .output}
-
-Finally, for each group in the `wealth_score` table, we sum their (financial) contribution
-across the years surveyed:
-
+To find the optically isotropic materials use
 ~~~
-data.groupby(wealth_score).sum()
+isotropic = birefringence[birefringence < 1e-5]
+print(isotropic[:10])
 ~~~
 {: .language-python}
 ~~~
-          gdpPercap_1952  gdpPercap_1957  gdpPercap_1962  gdpPercap_1967  \
-0.000000    36916.854200    46110.918793    56850.065437    71324.848786   
-0.333333    16790.046878    20942.456800    25744.935321    33567.667670   
-0.500000    11807.544405    14505.000150    18380.449470    21421.846200   
-1.000000   104317.277560   127332.008735   149989.154201   178000.350040   
-
-          gdpPercap_1972  gdpPercap_1977  gdpPercap_1982  gdpPercap_1987  \
-0.000000    88569.346898   104459.358438   113553.768507   119649.599409   
-0.333333    45277.839976    53860.456750    59679.634020    64436.912960   
-0.500000    25377.727380    29056.145370    31914.712050    35517.678220   
-1.000000   215162.343140   241143.412730   263388.781960   296825.131210   
-
-          gdpPercap_1992  gdpPercap_1997  gdpPercap_2002  gdpPercap_2007  
-0.000000    92380.047256   103772.937598   118590.929863   149577.357928  
-0.333333    67918.093220    80876.051580   102086.795210   122803.729520  
-0.500000    36310.666080    40723.538700    45564.308390    51403.028210  
-1.000000   315238.235970   346930.926170   385109.939210   427850.333420
+ormula
+BeO         0.0
+SrCl2       0.0
+NbSbRu      0.0
+K3MoF6      0.0
+HfVF6       0.0
+MoF6        0.0
+Rb2SnBr6    0.0
+Sr3BiN      0.0
+LiMgBi      0.0
+CsK2Sb      0.0
+dtype: float64
 ~~~
 {: .output}
 
@@ -329,27 +337,27 @@ data.groupby(wealth_score).sum()
 > ## Selection of Individual Values
 >
 > Assume Pandas has been imported into your notebook
-> and the Gapminder GDP data for Europe has been loaded:
+> and the JARVIS data has been loaded:
 >
 > ~~~
 > import pandas
 >
-> df = pandas.read_csv('data/gapminder_gdp_europe.csv', index_col='country')
+> df = pandas.read_csv('data/jarvis_all.csv', index_col='formula')
 > ~~~
 > {: .language-python}
 >
-> Write an expression to find the Per Capita GDP of Serbia in 2007.
+> Write an expression to find the formation energy per atom for BeO
 {: .challenge}
 >
 > > ## Solution
-> > The selection can be done by using the labels for both the row ("Serbia") and the column ("gdpPercap_2007"):
+> > The selection can be done by using the labels for both the row ("BeO") and the column ("form_enp"):
 > > ~~~
-> > print(df.loc['Serbia', 'gdpPercap_2007'])
+> > print(df.loc['BeO', 'form_enp'])
 > > ~~~
 > > {: .language-python}
 > > The output is
 > > ~~~
-> > 9786.534714
+> > -3.025
 > > ~~~
 > >{: .output}
 > {: .solution}
@@ -360,37 +368,36 @@ data.groupby(wealth_score).sum()
 > 1.  Do the two statements below produce the same output?
 > 2.  Based on this,
 >     what rule governs what is included (or not) in numerical slices and named slices in Pandas?
-> 
+>
 > ~~~
-> print(data.iloc[0:2, 0:2])
-> print(data.loc['Albania':'Belgium', 'gdpPercap_1952':'gdpPercap_1962'])
+> print(data_all.iloc[0:2, 0:2])
+> print(data_all.loc['As':'MoO3', 'epsx':'epsz'])
 > ~~~
 > {: .language-python}
-> 
+>
 {: .challenge}
-> 
+>
 > > ## Solution
 > > No, they do not produce the same output! The output of the first statement is:
 > > ~~~
-> >         gdpPercap_1952  gdpPercap_1957
-> > country                                
-> > Albania     1601.056136     1942.284244
-> > Austria     6137.076492     8842.598030
+> >             epsx     epsy
+> > formula
+> > As       21.0673  29.1228
+> > MoO3      6.3933   6.9466
 > > ~~~
 > >{: .output}
 > > The second statement gives:
 > > ~~~
-> >         gdpPercap_1952  gdpPercap_1957  gdpPercap_1962
-> > country                                                
-> > Albania     1601.056136     1942.284244     2312.888958
-> > Austria     6137.076492     8842.598030    10750.721110
-> > Belgium     8343.105127     9714.960623    10991.206760
+> >             epsx     epsy     epsz
+> > formula
+> > As       21.0673  29.1228  17.6066
+> > MoO3      6.3933   6.9466   6.3796
 > > ~~~
 > >{: .output}
-> > Clearly, the second statement produces an additional column and an additional row compared to the first statement.  
+> > Clearly, the second statement produces an additional column and an additional row compared to the first statement.
 > > What conclusion can we draw? We see that a numerical slice, 0:2, *omits* the final index (i.e. index 2)
 > > in the range provided,
-> > while a named slice, 'gdpPercap_1952':'gdpPercap_1962', *includes* the final element.
+> > while a named slice, 'epsx':'epsz', *includes* the final element.
 > {: .solution}
 {: .challenge}
 
@@ -400,53 +407,19 @@ data.groupby(wealth_score).sum()
 > what is in `first`, `second`, etc.?
 >
 > ~~~
-> first = pandas.read_csv('data/gapminder_all.csv', index_col='country')
-> second = first[first['continent'] == 'Americas']
-> third = second.drop('Puerto Rico')
-> fourth = third.drop('continent', axis = 1)
-> fourth.to_csv('result.csv')
+> first = pandas.read_csv('data/jarvis_all.csv', index_col='formula')
+> second = first[first.index.str.contains('Si')]
+> third = second.drop('Si')
+> third.to_csv('result.csv')
 > ~~~
 > {: .language-python}
 {: .challenge}
 >
 > > ## Solution
-> > Let's go through this piece of code line by line.
-> > ~~~
-> > first = pandas.read_csv('data/gapminder_all.csv', index_col='country')
-> > ~~~
-> > {: .language-python}
-> > This line loads the dataset containing the GDP data from all countries into a dataframe called 
-> > `first`. The `index_col='country'` parameter selects which column to use as the 
-> > row labels in the dataframe.  
-> > ~~~
-> > second = first[first['continent'] == 'Americas']
-> > ~~~
-> > {: .language-python}
-> > This line makes a selection: only those rows of `first` for which the 'continent' column matches 
-> > 'Americas' are extracted. Notice how the Boolean expression inside the brackets, 
-> > `first['continent'] == 'Americas'`, is used to select only those rows where the expression is true. 
-> > Try printing this expression! Can you print also its individual True/False elements? 
-> > (hint: first assign the expression to a variable)
-> > ~~~
-> > third = second.drop('Puerto Rico')
-> > ~~~
-> > {: .language-python}
-> > As the syntax suggests, this line drops the row from `second` where the label is 'Puerto Rico'. The 
-> > resulting dataframe `third` has one row less than the original dataframe `second`.
-> > ~~~
-> > fourth = third.drop('continent', axis = 1)
-> > ~~~
-> > {: .language-python}
-> > Again we apply the drop function, but in this case we are dropping not a row but a whole column. 
-> > To accomplish this, we need to specify also the `axis` parameter (we want to drop the second column 
-> > which has index 1).
-> > ~~~
-> > fourth.to_csv('result.csv')
-> > ~~~
-> > {: .language-python}
-> > The final step is to write the data that we have been working on to a csv file. Pandas makes this easy 
-> > with the `to_csv()` function. The only required argument to the function is the filename. Note that the 
-> > file will be written in the directory from which you started the Jupyter or Python session.
+> > 1. Read in data
+> > 2. Only include materials with silicon
+> > 3. Remove materials that are pure silicon
+> > 4. Save data to a CSV file
 > {: .solution}
 {: .challenge}
 
@@ -456,9 +429,10 @@ data.groupby(wealth_score).sum()
 > When would you use these methods?
 >
 > ~~~
-> data = pandas.read_csv('data/gapminder_gdp_europe.csv', index_col='country')
-> print(data.idxmin())
-> print(data.idxmax())
+data_all = pandas.read_csv('data/jarvis_all.csv')
+dielec = data_all.loc[:, 'epsx':'epsz']
+print(dielec.idxmin())
+print(dielec.idxmax())
 > ~~~
 > {: .language-python}
 {: .challenge}
@@ -471,101 +445,7 @@ data.groupby(wealth_score).sum()
 > {: .solution}
 {: .challenge}
 
-> ## Practice with Selection
->
-> Assume Pandas has been imported and the Gapminder GDP data for Europe has been loaded.
-> Write an expression to select each of the following:
->
-> 1.  GDP per capita for all countries in 1982.
-> 2.  GDP per capita for Denmark for all years.
-> 3.  GDP per capita for all countries for years *after* 1985.
-> 4.  GDP per capita for each country in 2007 as a multiple of 
->     GDP per capita for that country in 1952.
-{: .challenge}
->
-> > ## Solution
-> > 1:
-> > ~~~
-> > data['gdpPercap_1982']
-> > ~~~
-> > {: .language-python}
-> >
-> > 2:
-> > ~~~
-> > data.loc['Denmark',:]
-> > ~~~
-> > {: .language-python}
-> >
-> > 3:
-> > ~~~
-> > data.loc[:,'gdpPercap_1985':]
-> > ~~~
-> > {: .language-python}
-> > Pandas is smart enough to recognize the number at the end of the column label and does not give you an error, although no column named `gdpPercap_1985` actually exists. This is useful if new columns are added to the CSV file later.
-> >
-> > 4:
-> > ~~~
-> > data['gdpPercap_2007']/data['gdpPercap_1952']
-> > ~~~
-> > {: .language-python}
-> {: .solution}
-{: .challenge}
 
-
-> ## Using the dir function to see available methods
->
-> Python includes a `dir` function that can be used to display all of the available methods (functions) that are built into a data object.  As an example, the  functions available for a [list data type](https://docs.python.org/3/tutorial/datastructures.html#more-on-lists) are:
-> ~~~
-> potatoes = ["Russet", "Norkota", "Yukon Gold", "Pontiac"]
-> dir(potatoes)
-> ~~~
-> {: .language-python}
->
-> This command returns:
-> ~~~
-> ['__add__',
-> ...
-> '__subclasshook__',
->  'append',
->  'clear',
->  'copy',
->  'count',
-> 'extend',
-> 'index',
-> 'insert',
-> 'pop',
-> 'remove',
-> 'reverse',
-> 'sort']
-> ~~~
-> {: .language-python}
->
-> The double underscore functions can be ignored for now; functions that are not surrounded by double underscores are the *public interface* of the [list type](https://docs.python.org/3/tutorial/datastructures.html#more-on-lists). So, if you want to sort the list of potatoes, according to `dir` you should try,
-> ~~~
-> potatoes.sort()
-> ~~~
-> {: .language-python}
->
-> Assume Pandas has been imported and the Gapminder GDP data for Europe has been loaded as `data`.  Then, use `dir` to find the function that prints out the median per-capita GDP across all European countries for each year that information is available.  
-{: .challenge}
->
-> > ## Solution
-> > Among many choices, dir lists the `median()` function as a possibility.  Thus,
-> > ~~~
-> > data.median()
-> > ~~~
-> > {: .language-python}
-> {: .solution}
-{: .challenge}
-
-
-> ## Interpretation
->
-> Poland's borders have been stable since 1945,
-> but changed several times in the years before then.
-> How would you handle this if you were creating a table of GDP per capita for Poland
-> for the entire twentieth century?
-{: .challenge}
 
 
 [pandas-dataframe]: https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html
