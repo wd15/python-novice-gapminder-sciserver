@@ -284,7 +284,7 @@ InBr3    2.161897  2.178532  2.184537  2.161897
 {: .output}
 Two of the entries for Silicon have low birefringence.
 ~~~
-birefringence = dielectrics_sq.diff(axis=1).aggregate('max', axis=1)
+birefringence = dielectric_sq.diff(axis=1).aggregate('max', axis=1)
 print(birefringence.iloc[10:20])
 print()
 print(birefringence.loc["Si"])
