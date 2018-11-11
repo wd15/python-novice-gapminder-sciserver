@@ -116,32 +116,33 @@ plt.ylabel('op (eV)');
 
 ![GDP correlation using plt.scatter](../fig/9_conv_scatter.png)
 
-> ## Minima and Maxima
+> ## Bandgap versus Bulk Modulus
 >
-> Fill in the blanks below to plot the minimum GDP per capita over time
-> for all the countries in Europe.
-> Modify it again to plot the maximum GDP per capita over time for Europe.
->
-> ~~~
-> data_europe = pandas.read_csv('data/gapminder_gdp_europe.csv', index_col='country')
-> data_europe.____.plot(label='min')
-> data_europe.____
-> plt.legend(loc='best')
-> plt.xticks(rotation=90)
-> ~~~
-> {: .language-python}
+> Make a scatter plot of the bandgap versus the bulk modulus (either
+> `op_gap` or `mbj_gap` versus either `kv` or `gv`). Color the points
+> based on whether the material is metal (bandgap < 0.05),
+> semiconductor (0.05 < bandgap <= 3) or a insulator (bandgap >
+> 3). Use `dataframe.plot` with the arguments `kind='scatter'`,
+> `s=1.5` and `color=dataframe['color']`. Create an additional column
+> in the dataframe for the color. The `s` argument controls the size
+> of the points in the scatter plot. The `color` argument colors the
+> points based on string values in a series or dataframe column
+> (e.g. `r` for red or `g` for green).
 >
 > > ## Solution
 > >
 > > ~~~
-> > data_europe = pandas.read_csv('data/gapminder_gdp_europe.csv', index_col='country')
-> > data_europe.min().plot(label='min')
-> > data_europe.max().plot(label='max')
-> > plt.legend(loc='best')
-> > plt.xticks(rotation=90)
+> > df = pandas.read_csv('data/jarvis_all.csv')
+> >
+> > df.loc[:, 'color'] = 'r'
+> > df.loc[df.op_gap < 3, 'color'] = 'g'
+> > df.loc[df.op_gap < .05, 'color'] = 'b'
+> >
+> > df.plot('op_gap', 'epsx', kind='scatter', s=1.5, color=df['color'])
+> > plt.xlim([-0.2, 6]);
 > > ~~~
 > > {: .language-python}
-> > ![Minima Maxima Solution](../fig/9_minima_maxima_solution.png)
+> > ![Minima Maxima Solution](../fig/9_op_gap_versus_kv.png)
 > {: .solution}
 {: .challenge}
 
