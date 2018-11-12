@@ -23,6 +23,9 @@ keypoints:
 ~~~
 %matplotlib inline
 import matplotlib.pyplot as plt
+
+rc('text', usetex=False)
+plt.style.use('ggplot')
 ~~~
 {: .language-python}
 
@@ -46,11 +49,8 @@ plt.ylabel('Position (km)')
 *   Before plotting, we convert the column headings from a `string` to `integer` data type, since they represent numerical values
 
 ~~~
-%matplotlib inline
-import matplotlib.pyplot as plt
 import pandas
 
-plt.style.use('ggplot')
 data_all = pandas.read_csv('data/jarvis_all.csv', index_col='formula')
 eps = data_all.loc['Si', 'epsx':'epsz']
 eps.plot(kind="bar");
@@ -90,8 +90,8 @@ plt.plot(form_emp.values, 'g--')
 ~~~
 data_sort = data_all.sort_values('op_gap')
 
-plt.plot(data_sort.op_gap.values, 'g-', lw=2, label=r'op-gap')
-plt.plot(data_sort.mbj_gap.values, 'b.', ms=1, label=r'mbj-gap')
+plt.plot(data_sort.op_gap.values, 'g-', lw=2, label=r'op_gap')
+plt.plot(data_sort.mbj_gap.values, 'b.', ms=1, label=r'mbj_gap')
 plt.legend(loc='upper left')
 plt.xlabel('Sorted Index')
 plt.ylabel('Band gap (eV)');

@@ -21,30 +21,47 @@ keypoints:
 
 ~~~
 import pandas
-for filename in ['data/gapminder_gdp_africa.csv', 'data/gapminder_gdp_asia.csv']:
-    data = pandas.read_csv(filename, index_col='country')
+
+for filename in ['data/jarvis_all.csv', 'data/jarvis_subset.csv']:
+    data = pandas.read_csv(filename, index_col='formula')
     print(filename, data.min())
 ~~~
 {: .python}
 ~~~
-data/gapminder_gdp_africa.csv gdpPercap_1952    298.846212
-gdpPercap_1957    335.997115
-gdpPercap_1962    355.203227
-gdpPercap_1967    412.977514
-⋮ ⋮ ⋮
-gdpPercap_1997    312.188423
-gdpPercap_2002    241.165877
-gdpPercap_2007    277.551859
-dtype: float64
-data/gapminder_gdp_asia.csv gdpPercap_1952    331
-gdpPercap_1957    350
-gdpPercap_1962    388
-gdpPercap_1967    349
-⋮ ⋮ ⋮
-gdpPercap_1997    415
-gdpPercap_2002    611
-gdpPercap_2007    944
-dtype: float64
+data/jarvis_all.csv epsx             1.0681
+epsy             1.0681
+epsz             1.0681
+fin_en         -319.593
+form_enp         -4.135
+gv                -9.62
+icsd             100028
+kp_leng              40
+kv               -0.822
+mbj_gap          0.0002
+mepsx          -426.369
+mepsy          -425.156
+mepsz            1.0578
+mpid           mp-10010
+op_gap           0.0001
+jid         JVASP-10010
+dtype: object
+data/jarvis_subset.csv epsx             4.6738
+epsy              4.746
+epsz             4.7722
+fin_en         -103.757
+form_enp         -2.086
+gv                5.947
+icsd              27393
+kp_leng              50
+kv               16.378
+mbj_gap          0.6495
+mepsx            3.6685
+mepsy            3.7637
+mepsz            3.7977
+mpid             mp-158
+op_gap           0.0221
+jid         JVASP-11997
+dtype: object
 ~~~
 {: .output}
 
@@ -56,7 +73,7 @@ dtype: float64
     *   `?` meaning "match exactly one character"
 *   Python contains the `glob` library to provide pattern matching functionality
 *   The `glob` library contains a function also called `glob` to match file patterns
-*   E.g., `glob.glob('*.txt')` matches all files in the current directory 
+*   E.g., `glob.glob('*.txt')` matches all files in the current directory
     whose names end with `.txt`.
 *   Result is a (possibly empty) list of character strings.
 
@@ -66,9 +83,7 @@ print('all csv files in data directory:', glob.glob('data/*.csv'))
 ~~~
 {: .python}
 ~~~
-all csv files in data directory: ['data/gapminder_all.csv', 'data/gapminder_gdp_africa.csv', \
-'data/gapminder_gdp_americas.csv', 'data/gapminder_gdp_asia.csv', 'data/gapminder_gdp_europe.csv', \
-'data/gapminder_gdp_oceania.csv']
+all csv files in data directory: ['data/jarvis_all.csv', 'data/jarvis_subset.csv']
 ~~~
 {: .output}
 
@@ -87,18 +102,14 @@ all PDB files: []
     so that simple patterns will find the right data.
 
 ~~~
-for filename in glob.glob('data/gapminder_*.csv'):
+for filename in glob.glob('data/jarvis_*.csv'):
     data = pandas.read_csv(filename)
-    print(filename, data['gdpPercap_1952'].min())
+    print(filename, data['gv'].min())
 ~~~
 {: .python}
 ~~~
-data/gapminder_all.csv 298.8462121
-data/gapminder_gdp_africa.csv 298.8462121
-data/gapminder_gdp_americas.csv 1397.717137
-data/gapminder_gdp_asia.csv 331.0
-data/gapminder_gdp_europe.csv 973.5331948
-data/gapminder_gdp_oceania.csv 10039.59564
+data/jarvis_all.csv -9.62
+data/jarvis_subset.csv 5.947
 ~~~
 {: .output}
 
@@ -137,7 +148,7 @@ data/gapminder_gdp_oceania.csv 10039.59564
 > print('smallest file has', fewest, 'records')
 > ~~~
 > {: .python}
-> Notice that the shape method returns a tuple with 
+> Notice that the shape method returns a tuple with
 > the number of rows and columns of the data frame.
 >
 > > ## Solution
@@ -149,29 +160,6 @@ data/gapminder_gdp_oceania.csv 10039.59564
 > >     dataframe = pandas.read_csv(filename)
 > >     fewest = min(fewest, dataframe.shape[0])
 > > print('smallest file has', fewest, 'records')
-> > ~~~
-> > {: .python}
-> {: .solution}
-{: .challenge}
-
-> ## Comparing Data
->
-> Write a program that reads in the regional data sets
-> and plots the average GDP per capita for each region over time
-> in a single chart.
-> > ## Solution
-> > ~~~
-> > import glob
-> > import pandas 
-> > import matplotlib.pyplot as plt
-> > fig, ax = plt.subplots(1,1)
-> > for filename in glob.glob('data/gapminder_gdp*.csv'):
-> >     dataframe = pandas.read_csv(filename)
-> >     # extract region from the filename, expected to be in the format 'data/gapminder_gdp_<region>.csv'
-> >     region = filename.rpartition('_')[2][:-4] 
-> >     dataframe.mean().plot(ax=ax, label=region)
-> > plt.legend()
-> > plt.show()
 > > ~~~
 > > {: .python}
 > {: .solution}

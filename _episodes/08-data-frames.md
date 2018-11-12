@@ -268,8 +268,8 @@ determine materials that are optically isotropic.
 ~~~
 import numpy
 
-dielectric_sq = data_all[['epsx', 'epsy', 'epsz', 'epsx']].apply(numpy.sqrt)
-print(dielectric_sq.iloc[:5])
+dielectric_rt = data_all[['epsx', 'epsy', 'epsz', 'epsx']].apply(numpy.sqrt)
+print(dielectric_rt.iloc[:5])
 ~~~
 {: .language-python}
 ~~~
@@ -284,7 +284,7 @@ InBr3    2.161897  2.178532  2.184537  2.161897
 {: .output}
 Two of the entries for Silicon have low birefringence.
 ~~~
-birefringence = dielectric_sq.diff(axis=1).apply('abs').aggregate('max', axis=1)
+birefringence = dielectric_rt.diff(axis=1).apply('abs').aggregate('max', axis=1)
 print(birefringence.iloc[10:20])
 print()
 print(birefringence.loc["Si"])

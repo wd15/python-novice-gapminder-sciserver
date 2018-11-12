@@ -108,7 +108,7 @@ To get more details about each material in the dataframe, go to the
 [JARVIS website](https://www.ctcms.nist.gov/~knc6/JARVIS.html) using
 the `jid` value. For example, to get details about `As`
 (`JVASP-11997`), go to
-[https://www.ctcms.nist.gov/~knc6/jsmol/JVASP-11997]().
+[https://www.ctcms.nist.gov/~knc6/jsmol/JVASP-11997](https://www.ctcms.nist.gov/~knc6/jsmol/JVASP-11997).
 
 The page shows post-processed results from VASP calculations.
 
